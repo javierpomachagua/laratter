@@ -23,3 +23,6 @@ Auth::routes();
 
 Route::get('/{username}', 'UsersController@show');
 
+Route::get('login/facebook', 'Auth\LoginController@redirectToProvider')->name('login.facebook');
+Route::get('login/facebook/callback', 'Auth\LoginController@handleProviderCallback')->name('login.callback');
+
