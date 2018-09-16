@@ -11,11 +11,17 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\User::class)
+        $users = factory(App\User::class)
             ->times(50)
-            ->create()
-            ->each(function (App\User $user) {
+            ->create();
+        
+        $users->each(function (App\User $user) use ($users) {
                 $user->messages()->saveMany(factory(App\Message::class, 20)->make());
+            
+                $user->follows()->sync(
+                    $users->random(10)
+                );
+
             });;
     }
 }

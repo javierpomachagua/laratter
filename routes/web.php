@@ -23,6 +23,14 @@ Auth::routes();
 
 Route::get('/{username}', 'UsersController@show');
 
-Route::get('login/facebook', 'Auth\LoginController@redirectToProvider')->name('login.facebook');
-Route::get('login/facebook/callback', 'Auth\LoginController@handleProviderCallback')->name('login.callback');
+Route::get('login/facebook', 'SocialAuthController@redirectToProvider')->name('login.facebook');
+Route::get('login/facebook/callback', 'SocialAuthController@handleProviderCallback')->name('login.callback');
 
+Route::get('/{username}', 'UsersController@show');
+
+Route::get('/{username}/follows', 'UsersController@follows');
+Route::get('/{username}/followers', 'UsersController@followers');
+Route::post('/{usernane}/follow', 'UsersController@follow');
+Route::post('/{username}/unfollow', 'UsersController@unfollow');
+
+Route::post('/auth/facebook/register', 'SocialAuthController@register');
