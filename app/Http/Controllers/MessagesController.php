@@ -12,11 +12,12 @@ class MessagesController extends Controller
     public function create(CreateMessageRequest $request)
     {
         $user = $request->user();
+        $image = $request->file('image');
 
         $message = Message::create([
             'user_id' => $user->id,
             'content' => $request->input('message'),
-            'image' => 'https://picsum.photos/420/320?image=' . mt_rand(0, 1000)
+            'image' => $image->store('messages', 'public')
         ]);
 
         return redirect('/messages/' . $message->id);
@@ -34,5 +35,16 @@ class MessagesController extends Controller
                 'error' => $e
             ]);
         }
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $messages = Message::search($query)->get();
+        $messages->load('user');
+
+        return view('messages.index', [
+            'messages' => $messages
+        ]);
     }
 }
